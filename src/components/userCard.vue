@@ -2,8 +2,8 @@
   <div>
     <p class="company-title">账户信息</p>
     <section class="section-box">
-      <el-form-item label="账户名称" prop="team_name">
-        <el-input v-model="userInfo.name" class="width408" placeholder="请输入团队名称"></el-input>
+      <el-form-item label="账户名称">
+        <el-input v-model="name" readonly class="width408" placeholder="请输入团队名称"></el-input>
       </el-form-item>
       <el-form-item label="账号密码">
         <el-button type="primary" @click="handlePassword">重置密码</el-button>
@@ -17,6 +17,7 @@
 <script>
 import { resetPassword } from '../api/company'
 export default {
+  props: ['name'],
   data () {
     return {
       userInfo: {}
@@ -30,18 +31,17 @@ export default {
   },
   methods: {
     handlePassword () {
-      console.log(1111)
       this.$alert('密码将设置为123456<br>确定重置吗?', '密码重置', {
         dangerouslyUseHTMLString: true,
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let uid = this.userInfo.id
-        resetPassword({ uid }).then(res => {
-          this.$message.success('重置成功')
-          // this.$parent.getList(this.$parent.formParams) 
-        })
+        this.$emit('resetPassword')
+        // let uid = this.userInfo.id
+        // resetPassword({ uid }).then(res => {
+        //   this.$message.success('重置成功')
+        // })
       }).catch(() => {
         console.log(2)
       })

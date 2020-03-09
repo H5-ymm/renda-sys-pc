@@ -1,4 +1,6 @@
-import { $post } from '../axios'
+import {
+	$post
+} from '../axios'
 
 export const getCompanyList = data => $post('/company/companyList', data);
 
@@ -21,3 +23,4 @@ export const getProvincesList = () => $post('/Frequency/getProvincesList')
 export const getCitysList = data => $post('/Frequency/getCitysList', data)
 
 export const getAreasList = data => $post('/Frequency/getAreasList', data)
+export const reset_password = data => $post('/company/reset_password', data)

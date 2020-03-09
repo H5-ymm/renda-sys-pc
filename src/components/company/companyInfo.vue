@@ -9,8 +9,7 @@
         label-width="100px"
         class="teamMessage-form"
       >
-
-        <userCard></userCard>
+        <userCard :name="companyForm.com_name" @resetPassword="resetPassword"></userCard>
         <p class="company-title">基本信息</p>
         <section class="section-box">
           <el-form-item label="企业名称" prop="com_name">
@@ -24,7 +23,7 @@
               :show-file-list="false"
               :http-request="upload"
             >
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
               <i v-else class="el-icon-circle-plus avatar-uploader-icon"></i>
               <p>上传</p>
             </el-upload>
@@ -36,7 +35,7 @@
               :show-file-list="false"
               :http-request="uploadLicense"
             >
-              <img v-if="license_img" :src="license_img" class="avatar" />
+              <img v-if="license_img" :src="license_img" class="avatar">
               <i v-else class="el-icon-circle-plus avatar-uploader-icon"></i>
               <p>上传</p>
             </el-upload>
@@ -76,10 +75,10 @@
               placeholder="请填写详细地址"
             ></el-input>
           </el-form-item>
-          <el-form-item label="联系人" >
+          <el-form-item label="联系人">
             <el-input v-model="companyForm.link_man" class="width408" placeholder="请输入联系人姓名"></el-input>
           </el-form-item>
-          <el-form-item label="联系电话" >
+          <el-form-item label="联系电话">
             <el-input v-model="companyForm.link_phone" class="width408" placeholder="请输入联系人姓名"></el-input>
           </el-form-item>
           <el-form-item label="公司座机" prop="desc">
@@ -90,7 +89,7 @@
               <span class="landline-tip">如：021-66041618</span>
             </div>
           </el-form-item>
-          <el-form-item label="企业简介" prop="introduction" >
+          <el-form-item label="企业简介" prop="introduction">
             <el-input
               type="textarea"
               class="width408"
@@ -113,14 +112,14 @@
 import { getConstant } from '../../api/dictionary'
 import districtSelet from '../districtSelet'
 import userCard from '../userCard'
-import { resetPassword, getCompanyInfo, companyEdit } from '../../api/company'
+import { getCompanyInfo, companyEdit, reset_password } from '../../api/company'
 import { uploadFile } from '../../api/upload'
 export default {
   components: {
     districtSelet,
     userCard
   },
-  data () {
+  data() {
     return {
       address: [],
       companyForm: {
@@ -144,7 +143,7 @@ export default {
       companyTeamId: ''
     };
   },
-  created () {
+  created() {
     console.log(this.$route.query)
     this.companyTeamId = this.$route.query.uid
     let params = 'com_type,com_scale,job_array'
@@ -152,27 +151,35 @@ export default {
     this.getInfo(this.companyTeamId)
   },
   methods: {
-    getList (filed) {
+    getList(filed) {
       getConstant({ filed }).then(res => {
-        console.log(res,'res')
-        console.log(res.data,'res.data')
+        console.log(res, 'res')
+        console.log(res.data, 'res.data')
         const { com_scale, com_type, job_array } = res.data
         this.comScaleList = com_scale
         this.comTypeList = com_type
         this.jobList = job_array
       })
     },
-    getInfo (uid) {
+    resetPassword() {
+      let uid = this.companyForm.uid
+      reset_password({ uid }).then(res => {
+        this.$message.success('重置成功')
+      }).catch(error => {
+        this.$message.error('重置失败')
+      })
+    },
+    getInfo(uid) {
       getCompanyInfo({ uid }).then(res => {
         this.companyForm = res.data
-        if(res.data.provinceid){
+        if (res.data.provinceid) {
           let provinceid = res.data.provinceid + ''
           let cityid = res.data.cityid + ''
           let three_cityid = res.data.three_cityid + ''
-          this.address = [provinceid,cityid,three_cityid]
-          console.log(this.address,'this.address')
+          this.address = [provinceid, cityid, three_cityid]
+          console.log(this.address, 'this.address')
         }
-        if(res.data.link_tel){
+        if (res.data.link_tel) {
           let link = res.data.link_tel.split('-')
           if (link.length) {
             this.landlineStart = link[0]
@@ -181,23 +188,8 @@ export default {
         }
       })
     },
-    handlePassword () {
-      this.$alert('密码将设置为123456<br>确定重置吗?', '密码重置', {
-        dangerouslyUseHTMLString: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let uid = this.companyForm.uid
-        resetPassword({ uid }).then(res => {
-          this.$message.success('重置成功')
-        })
-      }).catch(() => {
-        console.log(2)
-      })
-    },
-    upload (params) {
-      console.log(params,'params')
+    upload(params) {
+      console.log(params, 'params')
       const _file = params.file;
       const isLt2M = _file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
@@ -209,7 +201,7 @@ export default {
         this.companyForm.log = res.data.url
       })
     },
-    getImg (file) {
+    getImg(file) {
       let url = null;
       if (window.createObjectURL != undefined) {
         url = window.createObjectURL(_file)
@@ -220,7 +212,7 @@ export default {
       }
       return url;
     },
-    uploadLicense (params) {
+    uploadLicense(params) {
       const _file = params.file;
       const isLt2M = _file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
@@ -232,16 +224,16 @@ export default {
         this.companyForm.license_img = res.data.url
       })
     },
-    change (val) {
+    change(val) {
       this.companyForm.provinceid = val[0]
       this.companyForm.cityid = val[1]
       this.companyForm.three_cityid = val[2]
     },
-    
-    submitForm (companyForm) {
+
+    submitForm(companyForm) {
       this.companyForm.landline = this.landlineStart + '-' + this.landlineEnd
       this.$refs[companyForm].validate((valid) => {
-        console.log(valid,'validdd')
+        console.log(valid, 'validdd')
         if (valid) {
           companyEdit(this.companyForm).then(res => {
             if (res.status.code == 200) {
@@ -255,7 +247,7 @@ export default {
         }
       });
     },
-    resetForm (companyForm) {
+    resetForm(companyForm) {
       this.$refs[companyForm].resetFields()
     }
   }
@@ -266,119 +258,119 @@ export default {
   padding-bottom: 80px;
   height: 100%;
   overflow: auto;
-    .title {
-      width: 100%;
-      height:44px;
-      line-height: 44px;
-      font-size:14px;
-      color: #333;
-      padding-left: 15px;
-      background:#fff;
-      box-shadow:0px 4px 4px 0px rgba(106,106,106,0.1);
-      border-radius:5px;
+  .title {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    font-size: 14px;
+    color: #333;
+    padding-left: 15px;
+    background: #fff;
+    box-shadow: 0px 4px 4px 0px rgba(106, 106, 106, 0.1);
+    border-radius: 5px;
+  }
+  .section-box {
+    background: #fff;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 5px;
+    .password-tip {
+      color: #6a6a6a;
+      margin-left: 20px;
     }
-    .section-box {
-      background:#fff;
-      margin: 20px 0;
-      padding: 20px;
-      border-radius: 5px;
-      .password-tip {
-        color: #6a6a6a;
-        margin-left: 20px;
-      }
-      .landline-tip {
-        position: absolute;
-        top: 0;
-        right: 0;
-        color: #999999;
-        font-size: 14px;
-      }
-    }
-    .manager-form-row {
-      width: 100%;
-      margin:  0 auto;
-      padding: 20px 0;
-      .company-title {
-        padding-left: 20px;
-      }
-      .teamMessage-form {
-        width: 100%;
-        font-size: 14px;
-        margin-bottom: 70px;
-        .width408 {
-          width: 408px;
-          position: relative;
-        }
-        .width60 {
-          width: 60px;
-        }
-        .width150 {
-          width:150px;
-        }
-        .landline {
-          width:20px;
-          height:1px;
-          background: #6a6a6a;
-          margin: 0 10px;
-          display: inline-block;
-        }
-        .el-input__inner {
-          border: 1px solid #eee;
-        }
-        .team-address {
-          margin-top: 5px;
-        }
-      }
-      .avatar-uploader .el-upload {
-        background: #eee;
-        border-radius: 3px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        color: #999999;
-        font-size: 14px;
-        width:91px;
-        height:91px;
-        >p {
-          margin-top: -10px;
-        }
-      }
-      .uploader-card {
-        display: inline-block;
-        margin-right: 20px;
-        .idcard-text  {
-          color:#6A6A6A;
-          text-align: center;
-          font-size: 14px;
-        }
-      }
-      .avatar-uploader .el-upload:hover {
-        border-color: #409EFF;
-      }
-      .avatar-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        text-align: center;
-        color: #999999;
-        font-size: 42px;
-        margin-top: 10px;
-      }
-      .avatar {
-        width:91px;
-        height:91px;
-        display: block;
-      }
-    }
-    .card-uploader-icon {
-      width: 162px;
-      height: 128px;
-    }
-    .idcard-tip {
+    .landline-tip {
       position: absolute;
-      right: -100px;
-      top: 30px;
+      top: 0;
+      right: 0;
+      color: #999999;
       font-size: 14px;
-      color: #999;
     }
+  }
+  .manager-form-row {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 0;
+    .company-title {
+      padding-left: 20px;
+    }
+    .teamMessage-form {
+      width: 100%;
+      font-size: 14px;
+      margin-bottom: 70px;
+      .width408 {
+        width: 408px;
+        position: relative;
+      }
+      .width60 {
+        width: 60px;
+      }
+      .width150 {
+        width: 150px;
+      }
+      .landline {
+        width: 20px;
+        height: 1px;
+        background: #6a6a6a;
+        margin: 0 10px;
+        display: inline-block;
+      }
+      .el-input__inner {
+        border: 1px solid #eee;
+      }
+      .team-address {
+        margin-top: 5px;
+      }
+    }
+    .avatar-uploader .el-upload {
+      background: #eee;
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      color: #999999;
+      font-size: 14px;
+      width: 91px;
+      height: 91px;
+      > p {
+        margin-top: -10px;
+      }
+    }
+    .uploader-card {
+      display: inline-block;
+      margin-right: 20px;
+      .idcard-text {
+        color: #6a6a6a;
+        text-align: center;
+        font-size: 14px;
+      }
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409eff;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      text-align: center;
+      color: #999999;
+      font-size: 42px;
+      margin-top: 10px;
+    }
+    .avatar {
+      width: 91px;
+      height: 91px;
+      display: block;
+    }
+  }
+  .card-uploader-icon {
+    width: 162px;
+    height: 128px;
+  }
+  .idcard-tip {
+    position: absolute;
+    right: -100px;
+    top: 30px;
+    font-size: 14px;
+    color: #999;
+  }
 }
 </style>

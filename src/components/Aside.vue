@@ -22,7 +22,7 @@
               <span>{{item.title}}</span>
             </template>
             <el-menu-item
-              :index="val.title"
+              :index="val.url"
               :class="{'is-active':title==val.title}"
               v-for="(val,ind) in item.submenu"
               :key="ind"
@@ -42,7 +42,7 @@ export default {
   props: {
 
   },
-  data () {
+  data() {
     return {
       menus: [
         {
@@ -156,38 +156,64 @@ export default {
       uid: localStorage.getItem('sys_uid')
     }
   },
-  created () {
+  created() {
     getRole({ uid: this.uid }).then(res => {
       console.log(res)
     })
   },
   methods: {
-    handleOpen (key, keyPath) {
+    handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
-    handleClose (key, keyPath) {
+    handleClose(key, keyPath) {
       //console.log(key, keyPath);
     },
-    escUser () {
+    escUser() {
       window.localStorage.clear()
       window.sessionStorage.clear()
       this.$router.push('/load')
     },
-    selectMenus (key, keyPath) {
+    selectMenus(key, keyPath) {
+      console.log(key, keyPath)
       this.title = key
-      let arr = [key]
+      let arr = this.getMenusTitle(key, this.menus)
       sessionStorage.setItem('menus', JSON.stringify(arr))
+    },
+    getMenusTitle(url, arr) {
+      let title = ''
+      let list = []
+      arr.forEach(item => {
+        item.submenu.forEach(val => {
+          if (val.url == url) {
+            title = val.title
+            list.push(title)
+          }
+        })
+      })
+      return list
     }
   },
   computed: {
-    routerli () {
+    routerli() {
       // 对应路由
       let pathStr = this.$route.path.split('/')
+      let path = ''
       console.log(pathStr)
-      return '/' + pathStr[1]
+      if (pathStr[1] == 'personalForm') {
+        path = '/teamList'
+      } else if (pathStr[1] == 'companyInfo') {
+        path = '/company'
+      } else if (pathStr[1] == 'orderTarkingCard') {
+        path = '/Userlist'
+      } else if (pathStr[1] == 'innDetail') {
+        path = '/innList'
+      } else {
+        path = this.$route.fullPath
+      }
+      return path
 
     },
-    names () {
+    names() {
       return this.$store.state.user.users
     }
   }
@@ -199,45 +225,44 @@ export default {
   height: 100%;
   background: #000;
 }
-.el-menu-vertical-demo{
-
+.el-menu-vertical-demo {
   border: 0px solid #ffffff;
   height: 100%;
 }
 .el-submenu .el-menu-item {
   min-width: 170px;
 }
-.el-menu-item.is-active{
-  background:#1890FF!important;
-  border: none!important;
-  box-sizing: border-box!important;
-  color: #fff!important;
+.el-menu-item.is-active {
+  background: #1890ff !important;
+  border: none !important;
+  box-sizing: border-box !important;
+  color: #fff !important;
 }
 .el-menu-item {
   background-color: rgba(0, 0, 0, 0.1) !important;
-  padding-left: 50px!important;
+  padding-left: 50px !important;
 }
 .el-menu-item.is-active {
-  background:#1890FF!important;
-  border-right: 4px solid #06ADFB;
+  background: #1890ff !important;
+  border-right: 4px solid #06adfb;
   box-sizing: border-box;
   color: #fff;
-  padding-left: 50px!important;
+  padding-left: 50px !important;
 }
-.names{
+.names {
   width: 100%;
   height: 60px;
   text-align: center;
   color: #fff;
-  background:#20222A;
-  height:46px;
+  background: #20222a;
+  height: 46px;
   line-height: 46px;
 }
-.tac{
+.tac {
   height: 100%;
   overflow: auto;
 }
-.el-container{
+.el-container {
   height: 100%;
 }
 </style>

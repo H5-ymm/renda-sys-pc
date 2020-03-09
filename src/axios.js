@@ -1,15 +1,15 @@
 import axios from 'axios';
 import QS from 'qs';
 const $axios = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: process.env.VUE_APP_URL,
   timeout: 4000
 });
-const baseURL1 = process.env.VUE_APP_URL + '/index.php'
-const baseURL = process.env.VUE_APP_URL + '/admin.php'
-const baseExportURL = process.env.VUE_APP_URL + '/uploads/test/'
-// const baseURL1 = 'http://tiantianxsg.com:39888/index.php'
-// const baseURL = 'http://tiantianxsg.com:39888/admin.php'
-// const baseExportURL = 'http://tiantianxsg.com:39888/uploads/test/'
+// const baseURL1 = process.env.VUE_APP_URL + '/index.php'
+// const baseURL = process.env.VUE_APP_URL + '/admin.php'
+// const baseExportURL = process.env.VUE_APP_URL + '/uploads/test/'
+const baseURL1 = 'http://tiantianxsg.com:39888/index.php'
+const baseURL = 'http://tiantianxsg.com:39888/admin.php'
+const baseExportURL = 'http://tiantianxsg.com:39888/uploads/test/'
 
 //请求拦截
 $axios.interceptors.request.use(

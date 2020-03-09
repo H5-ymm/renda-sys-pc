@@ -52,6 +52,13 @@
         <el-table-column prop="desired_position" label="意向岗位" width="180" align="center"></el-table-column>
         <el-table-column prop="money" label="意向工资" width="130" align="center"></el-table-column>
         <el-table-column prop="city" label="意向城市" width="120" align="center"></el-table-column>
+        <el-table-column label="跟进人" width="160" align="center">
+          <template slot-scope="props">
+            <span
+              @click="openWindow(props.row)"
+            >{{props.row.trackList?props.row.trackList.username:''}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="跟进记录" width="260" align="center">
           <template slot-scope="props">
             <el-button type="text">
@@ -190,9 +197,7 @@ export default {
         })
     },
     exPort() {
-      exportUserResume(this.formParams.uid).then(res => {
-        console.log(res)
-      })
+      exportUserResume(this.formParams.uid)
     },
     postFormData(url, params) {
       window.location.href = `${url}?uid=${params}`
@@ -228,7 +233,7 @@ export default {
 <style lang="scss">
 </style> -->
 <style lang="scss">
-@import '../assets/css/table-list';
+@import "../assets/css/table-list";
 .slot_row {
   width: 100%;
   height: 20px;
