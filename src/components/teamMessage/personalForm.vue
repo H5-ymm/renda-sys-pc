@@ -9,7 +9,7 @@
         label-width="100px"
         class="teamMessage-form"
       >
-        <userCard :name="personalForm.team_name" @resetPassword="resetPassword"></userCard>
+        <userCard :name="personalForm.user_name" @resetPassword="resetPassword"></userCard>
         <p class="company-title">基本信息</p>
         <section class="section-box">
           <el-form-item label="团队名称" prop="team_name">
