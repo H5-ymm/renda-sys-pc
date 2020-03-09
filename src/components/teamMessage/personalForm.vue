@@ -131,7 +131,7 @@ export default {
       })
     },
     resetPassword() {
-      let uid = this.companyForm.uid
+      let uid = this.personalForm.uid
       reset_password({ uid }).then(res => {
         this.$message.success('重置成功')
       }).catch(error => {

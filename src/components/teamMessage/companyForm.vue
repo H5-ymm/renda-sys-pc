@@ -9,7 +9,7 @@
         label-width="100px"
         class="teamMessage-form"
       >
-        <userCard></userCard>
+        <userCard @resetPassword="resetPassword" :name="companyForm.user_name"></userCard>
         <p class="company-title">基本信息</p>
         <section class="section-box">
           <el-form-item label="团队名称" prop="team_name">
@@ -23,7 +23,7 @@
               :show-file-list="false"
               :http-request="upload"
             >
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
               <i v-else class="el-icon-circle-plus avatar-uploader-icon"></i>
               <p>上传logo</p>
             </el-upload>
@@ -35,7 +35,7 @@
               :show-file-list="false"
               :http-request="uploadLicense"
             >
-              <img v-if="license_img" :src="license_img" class="avatar" />
+              <img v-if="license_img" :src="license_img" class="avatar">
               <i v-else class="el-icon-circle-plus avatar-uploader-icon"></i>
               <p>上传logo</p>
             </el-upload>
@@ -110,12 +110,13 @@ import districtSelet from '../districtSelet'
 import userCard from '../userCard'
 import { edit_team, getTeamInfo } from '../../api/team'
 import { uploadFile } from '../../api/upload'
+import { reset_password } from '../../api/company'
 export default {
   components: {
     districtSelet,
     userCard
   },
-  data () {
+  data() {
     return {
       companyForm: {
         type: 1
@@ -137,7 +138,7 @@ export default {
       jobList: {},
     };
   },
-  created () {
+  created() {
     console.log(this.$route.query)
     this.companyForm.id = this.$route.query.id
     let params = 'com_type,com_scale,job_array'
@@ -147,7 +148,7 @@ export default {
     }
   },
   methods: {
-    getList (filed) {
+    getList(filed) {
       getConstant({ filed }).then(res => {
         const { com_scale, com_type, job_array } = res.data
         this.comScaleList = com_scale
@@ -155,7 +156,15 @@ export default {
         this.jobList = job_array
       })
     },
-    getInfo (id) {
+    resetPassword() {
+      let uid = this.companyForm.uid
+      reset_password({ uid }).then(res => {
+        this.$message.success('重置成功')
+      }).catch(error => {
+        this.$message.error('重置失败')
+      })
+    },
+    getInfo(id) {
       getTeamInfo({ id }).then(res => {
         if (res.data) {
           this.personalForm = res.data || {}
@@ -166,7 +175,7 @@ export default {
         }
       })
     },
-    upload (params) {
+    upload(params) {
       const _file = params.file;
       const isLt2M = _file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
@@ -178,7 +187,7 @@ export default {
         this.companyForm.log = res.data.url
       })
     },
-    getImg (file) {
+    getImg(file) {
       let url = null;
       if (window.createObjectURL != undefined) {
         url = window.createObjectURL(_file)
@@ -189,7 +198,7 @@ export default {
       }
       return url;
     },
-    uploadLicense (params) {
+    uploadLicense(params) {
       const _file = params.file;
       const isLt2M = _file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
@@ -201,12 +210,12 @@ export default {
         this.companyForm.license_img = res.data.url
       })
     },
-    change (val) {
+    change(val) {
       this.companyForm.provinceid = val[0]
       this.companyForm.cityid = val[1]
       this.companyForm.three_cityid = val[2]
     },
-    submitForm (companyForm) {
+    submitForm(companyForm) {
       this.companyForm.landline = this.landlineStart + '-' + this.landlineEnd
       this.$refs[companyForm].validate((valid) => {
         if (valid) {
@@ -220,7 +229,7 @@ export default {
         }
       });
     },
-    resetForm (companyForm) {
+    resetForm(companyForm) {
       this.$refs[companyForm].resetFields()
     }
   }
