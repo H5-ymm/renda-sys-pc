@@ -8,7 +8,7 @@ function resolve (dir) {
 module.exports = {
   publicPath: './',
   // 输出文件目录
-  outputDir: 'dist',
+  outputDir: process.env.outputDir,
   // eslint-loader 是否在保存的时候检查
   lintOnSave: true,
   assetsDir: 'assets',

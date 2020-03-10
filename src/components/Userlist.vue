@@ -3,38 +3,11 @@
     <memberCard :userType="userType"></memberCard>
     <div class="table-list">
       <memberQuery @onSubmit="onSubmit" @selectQuery="selectQuery"></memberQuery>
-      <memberTable
-        :total="total"
-        :tableData="tableData"
-        @handleEdit="handleEdit"
-        @handleCheck="handleCheck"
-        @handleDel="handleDel"
-        @handleSelectionChange="handleSelectionChange"
-      ></memberTable>
-      <el-pagination
-        class="team-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="newForm.page"
-        :page-sizes="[10, 30, 50, 100]"
-        :page-size="newForm.limit"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
+      <memberTable :total="total" :tableData="tableData" @handleEdit="handleEdit" @handleCheck="handleCheck" @handleDel="handleDel" @handleSelectionChange="handleSelectionChange"></memberTable>
+      <el-pagination class="team-pagination" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="newForm.page" :page-sizes="[10, 30, 50, 100]" :page-size="newForm.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
     </div>
-    <memberInfo
-      :dialogTableVisible="dialogTableVisible"
-      @submitMember="submitMember"
-      :userId="userId"
-    ></memberInfo>
-    <confirmDialog
-      v-if="visible"
-      :dialogTableVisible="true"
-      @submit="submit"
-      :infoObj="infoObj"
-      dialogType="check"
-      @handleClose="visible=false;ids='';dialogType=''"
-    ></confirmDialog>
+    <memberInfo :dialogTableVisible="dialogTableVisible" @submitMember="submitMember" :userId="userId"></memberInfo>
+    <confirmDialog :dialogTableVisible="visible" @submit="submit" :objRow="objRow" :dialogType="dialogType" @handleClose="visible=false;ids='';dialogType=''"></confirmDialog>
   </div>
 </template>
 <script>
@@ -69,8 +42,9 @@ export default {
       total: 0,
       len: 0,
       userId: '',
-      ids: ''
-
+      ids: '',
+      objRow: {},
+      dialogType: ''
     }
   },
   created () {
@@ -89,13 +63,13 @@ export default {
   //     }
   //   }
   // },
-  
+
   methods: {
     // 筛选
-    selectQuery(v){
+    selectQuery (v) {
       this.newForm = v
       let newForm = Object.assign(this.newForm, v)
-      console.log(newForm,'newForm')
+      console.log(newForm, 'newForm')
       this.getList(newForm)
     },
     handleSizeChange (val) {
@@ -111,9 +85,9 @@ export default {
         const { data } = res
         this.tableData = data.data
         this.total = data.count
-        console.log(data.data,'data.data')
-        if(data.data.length){
-          for(let i =0;i<data.data.length;i++){
+        console.log(data.data, 'data.data')
+        if (data.data.length) {
+          for (let i = 0; i < data.data.length; i++) {
             this.ids = data.data[i].id
           }
         }
@@ -143,7 +117,7 @@ export default {
     },
     // 审核
     submit (val) {
-      let params = Object.assign(val,{ ids:this.ids })
+      let params = Object.assign(val, { ids: this.ids })
       checkFdjob(params).then(res => {
         this.visible = false
         this.getList(this.newForm)
@@ -152,8 +126,11 @@ export default {
       })
     },
     handleCheck (val) {
+      this.dialogType = "check"
+      this.objRow = val
+      console.log(this.objRow)
       this.visible = true;
-      this.ids = val
+      this.ids = val.id
     },
     onSubmit (value) {
       let params = Object.assign(this.newForm, value)

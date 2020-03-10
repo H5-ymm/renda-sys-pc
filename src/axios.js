@@ -54,23 +54,23 @@ $axios.interceptors.response.use(
         // 在登录成功后返回当前页面，这一步需要在登录页操作。    
         case 401:
           break;
-          // 403 token过期    
-          // 登录过期对用户进行提示    
-          // 清除本地token和清空vuex中token对象    
-          // 跳转登录页面    
+        // 403 token过期    
+        // 登录过期对用户进行提示    
+        // 清除本地token和清空vuex中token对象    
+        // 跳转登录页面    
         case 403:
           this.$message.error(error.response.status.remind);
           // 清除token     
           localStorage.removeItem('token');
           // 跳转登录页面，并将要浏览的页面fullPath传过去，登录成功后跳转需要访问的页面     
           break;
-          // 404请求不存在    
+        // 404请求不存在    
         case 404:
           //   this.$message.error('网络请求不存在');   
           break;
-          // 其他错误，直接抛出错误提示    
+        // 其他错误，直接抛出错误提示    
         default:
-          //   this.$message.error(error.response.status.remind) 
+        //   this.$message.error(error.response.status.remind) 
       }
       return Promise.reject(error.response);
     }
@@ -81,7 +81,7 @@ $axios.interceptors.response.use(
  * @param {String} url [请求的url地址] 
  * @param {Object} params [请求时携带的参数] 
  */
-export function post(url, data) {
+export function post (url, data) {
   return new Promise((resolve, reject) => {
     $axios.post(`${baseURL}${url}`, QS.stringify(data || {}))
       .then(res => {
@@ -93,7 +93,7 @@ export function post(url, data) {
       })
   });
 }
-export function $post(url, params) {
+export function $post (url, params) {
   return new Promise((resolve, reject) => {
     $axios.post(`${baseURL}${url}${'?' + QS.stringify(params)}`)
       .then(res => {
@@ -104,7 +104,7 @@ export function $post(url, params) {
       })
   });
 }
-export function $get(url, params) {
+export function $get (url, params) {
   return new Promise((resolve, reject) => {
     $axios.get(`${baseURL}${url}${'?' + QS.stringify(params)}`)
       .then(res => {
@@ -115,11 +115,11 @@ export function $get(url, params) {
       })
   });
 }
-export function exportData(url, params) {
+export function exportData (url, params) {
   let param = QS.stringify(params)
   window.location.href = `${baseURL}${url}${'?'}${param}`
 }
-export function upload(params) {
+export function upload (params) {
   let file = new FormData()
   file.append('image', params)
   return new Promise((resolve, reject) => {
@@ -132,7 +132,7 @@ export function upload(params) {
       })
   });
 }
-export function getData(url, params) {
+export function getData (url, params) {
   return new Promise((resolve, reject) => {
     $axios.post(`${baseURL1}${url}${'?' + QS.stringify(params)}`)
       .then(res => {

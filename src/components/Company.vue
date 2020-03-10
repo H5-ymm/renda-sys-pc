@@ -9,12 +9,7 @@
               <el-option label="手机号" value="telphone"></el-option>
               <el-option label="用户编码" value="id"></el-option>
             </el-select>
-            <el-input
-              class="query-input"
-              v-model="keyword"
-              @change="changeInput"
-              placeholder="请输入关键词"
-            ></el-input>
+            <el-input class="query-input" v-model="keyword" @change="changeInput" placeholder="请输入关键词"></el-input>
             <el-button type="primary" @click="getList(formParams)" class="select-btn">搜索</el-button>
             <el-button type="primary" @click="show=!show" class="collapse-btn">{{show?'收起':'展开'}}</el-button>
           </div>
@@ -22,31 +17,13 @@
         <el-collapse-transition>
           <div v-show="show">
             <el-form-item label="登录时间:">
-              <el-link
-                :underline="false"
-                :class="{'active': formParams.login_data==item.value}"
-                @click="selectQuery('login_data',item)"
-                v-for="(item,index) in timeList"
-                :key="index"
-              >{{item.label}}</el-link>
+              <el-link :underline="false" :class="{'active': formParams.login_data==item.value}" @click="selectQuery('login_data',item)" v-for="(item,index) in timeList" :key="index">{{item.label}}</el-link>
             </el-form-item>
             <el-form-item label="注册时间:">
-              <el-link
-                :underline="false"
-                :class="{'active': formParams.reg_date==item.value}"
-                @click="selectQuery('reg_date',item)"
-                v-for="(item,index) in timeList"
-                :key="index"
-              >{{item.label}}</el-link>
+              <el-link :underline="false" :class="{'active': formParams.reg_date==item.value}" @click="selectQuery('reg_date',item)" v-for="(item,index) in timeList" :key="index">{{item.label}}</el-link>
             </el-form-item>
             <el-form-item label="状态筛选:">
-              <el-link
-                :underline="false"
-                :class="{'active': formParams.status==item.value}"
-                @click="selectQuery('status',item)"
-                v-for="(item,index) in statusList"
-                :key="index"
-              >{{item.label}}</el-link>
+              <el-link :underline="false" :class="{'active': formParams.status==item.value}" @click="selectQuery('status',item)" v-for="(item,index) in statusList" :key="index">{{item.label}}</el-link>
             </el-form-item>
           </div>
         </el-collapse-transition>
@@ -56,12 +33,7 @@
           <el-button @click="handleTeam('lock',uid)" class="select-btn">锁定</el-button>
         </el-form-item>
       </el-form>
-      <el-table
-        :data="tableData"
-        ref="multipleTable"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-      >
+      <el-table :data="tableData" ref="multipleTable" style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" align="center" width="60"></el-table-column>
         <el-table-column label="用户编号" prop="id" align="center" width="80"></el-table-column>
         <el-table-column label="企业名称" prop="com_name" align="center" width="200"></el-table-column>
@@ -78,53 +50,17 @@
               <div>
                 <img v-if="scope.row.phone" src="../assets/img/member/phone.png" title="手机">
                 <img v-else src="../assets/img/member/phone1.png" title="手机">
-                <img
-                  v-if="scope.row.bank_status==0"
-                  src="../assets/img/member/card1.png"
-                  title="银行卡"
-                >
-                <img
-                  v-else-if="scope.row.bank_status==1"
-                  src="../assets/img/member/card.png"
-                  title="银行卡"
-                >
+                <img v-if="scope.row.bank_status==0" src="../assets/img/member/card1.png" title="银行卡">
+                <img v-else-if="scope.row.bank_status==1" src="../assets/img/member/card.png" title="银行卡">
                 <img v-if="scope.row.wx_status==1" src="../assets/img/member/wx.png" title="微信">
-                <img
-                  v-else-if="scope.row.wx_status==0"
-                  src="../assets/img/member/wx1.png"
-                  title="微信"
-                >
+                <img v-else-if="scope.row.wx_status==0" src="../assets/img/member/wx1.png" title="微信">
                 <div>
-                  <img
-                    v-if="scope.row.idcard_status==1"
-                    src="../assets/img/member/IDCard.png"
-                    title="身份证"
-                  >
-                  <img
-                    v-else-if="scope.row.idcard_status==0"
-                    src="../assets/img/member/IDCard1.png"
-                    title="身份证"
-                  >
-                  <img
-                    v-if="scope.row.email_status==1"
-                    src="../assets/img/member/email.png"
-                    title="邮箱"
-                  >
-                  <img
-                    v-else-if="scope.row.email_status==0"
-                    src="../assets/img/member/email1.png"
-                    title="邮箱"
-                  >
-                  <img
-                    v-if="scope.row.alipay_status==1"
-                    src="../assets/img/member/zfb.png"
-                    title="支付宝"
-                  >
-                  <img
-                    v-else-if="scope.row.alipay_status==0"
-                    src="../assets/img/member/zfb1.png"
-                    title="支付宝"
-                  >
+                  <img v-if="scope.row.idcard_status==1" src="../assets/img/member/IDCard.png" title="身份证">
+                  <img v-else-if="scope.row.idcard_status==0" src="../assets/img/member/IDCard1.png" title="身份证">
+                  <img v-if="scope.row.email_status==1" src="../assets/img/member/email.png" title="邮箱">
+                  <img v-else-if="scope.row.email_status==0" src="../assets/img/member/email1.png" title="邮箱">
+                  <img v-if="scope.row.alipay_status==1" src="../assets/img/member/zfb.png" title="支付宝">
+                  <img v-else-if="scope.row.alipay_status==0" src="../assets/img/member/zfb1.png" title="支付宝">
                 </div>
               </div>
             </div>
@@ -137,9 +73,7 @@
           </template>-->
 
           <template slot-scope="props">
-            <p
-              :class="props.row.status === 0 ? 'grayyuan': props.row.status === 1 ? 'greenyuan': 'redyuan'"
-            ></p>
+            <p :class="props.row.status === 0 ? 'grayyuan': props.row.status === 1 ? 'greenyuan': 'redyuan'"></p>
             {{ props.row.status == 0&& props.row.is_lock == 0 ? '待审核': props.row.status == 1 && props.row.is_lock == 0 ? '已通过': props.row.status == 2 && props.row.is_lock == 0 ? '未通过': props.row.is_lock == 1 ? '已锁定':''}}
           </template>
         </el-table-column>
@@ -147,60 +81,25 @@
           <template slot-scope="scope">
             <div class="table-button-box">
               <div class="x-flex-center x-flex-wrap">
-                <el-button
-                  @click="handleTeam('check',scope.row)"
-                  v-if="scope.row.status==0"
-                  type="text"
-                  size="small"
-                >审&emsp;核</el-button>
-                <el-button
-                  @click="handleTeam('check',scope.row)"
-                  v-if="scope.row.status==1 || scope.row.status==2"
-                  type="text"
-                  size="small"
-                >已审核</el-button>
+                <el-button @click="handleTeam('check',scope.row)" v-if="scope.row.status==0" type="text" size="small">审&emsp;核</el-button>
+                <el-button @click="handleTeam('check',scope.row)" v-if="scope.row.status==1 || scope.row.status==2" type="text" size="small">已审核</el-button>
                 <el-button @click="handleEdit(scope.row)" type="text" size="small">查&emsp;看</el-button>
                 <el-button @click="handleLog(scope.row)" type="text" size="small">日&emsp;志</el-button>
               </div>
               <div class="x-flex-center x-flex-wrap">
                 <el-button @click="handleDel(scope.row.uid)" type="text" size="small">删&emsp;除</el-button>
-                <el-button
-                  v-if="scope.row.is_lock==0"
-                  @click="handleTeam('lock',scope.row)"
-                  type="text"
-                  size="small"
-                >锁&emsp;定</el-button>
-                <el-button
-                  v-else-if="scope.row.is_lock==1"
-                  @click="handleTeam('lock',scope.row)"
-                  type="text"
-                  size="small"
-                >解&emsp;锁</el-button>
+                <el-button v-if="scope.row.is_lock==0" @click="handleTeam('lock',scope.row)" type="text" size="small">锁&emsp;定</el-button>
+                <el-button v-else-if="scope.row.is_lock==1" @click="handleTeam('lock',scope.row)" type="text" size="small">解&emsp;锁</el-button>
                 <el-button @click="handlePassword(scope.row)" type="text" size="small">密&emsp;码</el-button>
               </div>
             </div>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        class="team-pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="formParams.page"
-        :page-sizes="[10, 30, 50, 100]"
-        :page-size="formParams.limit"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
+      <el-pagination class="team-pagination" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="formParams.page" :page-sizes="[10, 30, 50, 100]" :page-size="formParams.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
     </div>
     <Log :dialogTableVisible="visible" @handleClose="visible=false" :uid="uid"></Log>
-    <confirmDialog
-      :dialogTableVisible="dialogTableVisible"
-      @submit="submit"
-      :objRow="objRow"
-      :dialogType="dialogType"
-      @handleClose="dialogTableVisible=false;uid='';dialogType=''"
-    ></confirmDialog>
+    <confirmDialog :dialogTableVisible="dialogTableVisible" @submit="submit" :objRow="objRow" :dialogType="dialogType" @handleClose="dialogTableVisible=false;uid='';dialogType=''"></confirmDialog>
     <!-- :status="status" -->
   </div>
 </template>
@@ -215,7 +114,7 @@ export default {
     Log,
     confirmDialog
   },
-  data() {
+  data () {
     return {
       // lockStatus: false,
       // lockStatusNum: 0,
@@ -264,13 +163,13 @@ export default {
       objRow: {}
     }
   },
-  created() {
+  created () {
     // 初始化查询标签数据
     console.log(this.formParams, 'this.formParams')
     this.getList(this.formParams)
   },
   watch: {
-    keyword(v) {
+    keyword (v) {
       console.log(v, 1234)
       if (v) {
         this.formParams['reg_date'] = 0
@@ -280,7 +179,7 @@ export default {
     }
   },
   methods: {
-    changeInput(e) {
+    changeInput (e) {
       console.log(this.value, 'this.value')
       console.log(e, 'e')
       if (this.value == 'com_name') {
@@ -296,21 +195,21 @@ export default {
       this.formParams[this.value] = e
     },
     // 多选
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.multipleSelection = val;
       this.uid = val.map(item => item.uid).join(',')
       console.log(this.uid, 'this.uid')
     },
 
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.formParams.limit = val
       this.getList(this.formParams)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.formParams.page = val
       this.getList(this.formParams)
     },
-    selectQuery(key, item) {
+    selectQuery (key, item) {
       if (key == 'login_data') {
         this.formParams['reg_date'] = 0
         this.formParams['status'] = 0
@@ -326,7 +225,7 @@ export default {
       this.formParams[key] = item.value
       this.getList(this.formParams)
     },
-    handleTeam(type, val) {
+    handleTeam (type, val) {
       console.log(val, 'val')
       if (!this.uid && !val) {
         return this.$message.warning('请选择团队')
@@ -340,7 +239,7 @@ export default {
           this.dialogType = type
           this.dialogTableVisible = true
           if (this.dialogType == 'check') {
-            this.objRow = val
+            // this.objRow = val
             this.objRow.status = Number(val.status) + 1
             console.log(this.objRow.status)
           } else {
@@ -350,7 +249,7 @@ export default {
         }
       }
     },
-    submit(val) {
+    submit (val) {
       this.checkData = {}
       this.lockData = {}
       console.log(val, 'val')
@@ -371,9 +270,6 @@ export default {
         }
         this.submitCheck(this.checkData)
       } else {
-        // let islocked = val.status
-        // let reasons = val.reason
-        // let params = { ids: this.ids, is_lock: islocked, reason: reasons}
         this.lockData = {
           uids: this.uid,
           status: val.status,
@@ -382,7 +278,7 @@ export default {
         this.submitLock(this.lockData)
       }
     },
-    getList(params) {
+    getList (params) {
       getCompanyList(params).then(res => {
         const { data } = res
         this.tableData = data.data
@@ -393,19 +289,23 @@ export default {
         }
       })
     },
-    handleEdit(val) {
+    handleEdit (val) {
       this.$router.push({ path: 'companyInfo', query: { uid: val.uid } })
     },
-    submitCheck(val) {
+    submitCheck (val) {
       companyCheck(val).then(res => {
+        this.dialogType = ''
+        this.objRow = {}
         this.getList(this.formParams)
         // this.uid = ''
       }).catch((error) => {
         this.$message.error(error.status.remind)
       })
     },
-    submitLock(val) {
+    submitLock (val) {
       companyLock(val).then(res => {
+        this.dialogType = ''
+        this.objRow = {}
         this.getList(this.formParams)
         this.uid = ''
         // this.lockStatus = res.data.status
@@ -413,11 +313,11 @@ export default {
         this.$message.error(error.status.remind)
       })
     },
-    handleLock(val) {
+    handleLock (val) {
       this.visibleLock = true
       this.uid = val.uid
     },
-    handleDel(uids) {
+    handleDel (uids) {
       this.delData.uids = this.uid
       console.log(77777)
       this.$confirm('你确定要删除吗?', '', {
@@ -433,7 +333,7 @@ export default {
       })
       this.delData = {}
     },
-    handlePassword(val) {
+    handlePassword (val) {
       this.$alert('密码将设置为123456<br>确定重置吗?', '密码重置', {
         dangerouslyUseHTMLString: true,
         confirmButtonText: '确定',
@@ -449,7 +349,7 @@ export default {
         console.log(2)
       })
     },
-    handleLog(row) {
+    handleLog (row) {
       this.uid = row.uid
       this.visible = true
     }

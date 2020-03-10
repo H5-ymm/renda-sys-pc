@@ -11,13 +11,7 @@
       </div>
     </div>
     <div class="table">
-      <el-table
-        border=""
-        :data="tableData"
-        ref="multipleTable"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-      >
+      <el-table border="" :data="tableData" ref="multipleTable" style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" align="center" width="60"></el-table-column>
         <el-table-column label="编号" prop="id" align="center" width="60"></el-table-column>
         <el-table-column label="职位/企业名称" align="center" width="150">
@@ -47,34 +41,18 @@
           <template slot-scope="props">
             <!-- {{props.row.job_status}} -->
             <div class="job_status">{{props.row.job_status==1?"招聘中":'已下架'}}</div>
-            <el-switch
-              :value="getChangeStatus(props.row.job_status)"
-              @change="swichChange(props.row.job_status,props.$index)"
-            ></el-switch>
+            <el-switch :value="getChangeStatus(props.row.job_status)" @change="swichChange(props.row.job_status,props.$index)"></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="审核状态" align="center" width="150">
           <template slot-scope="props">
-            <span
-              class="status"
-              :class="{'active-status1':props.row.status==1,'active-status':props.row.status==2,'active-status2':props.row.status==3}"
-            >{{props.row.status | statusType}}</span>
+            <span class="status" :class="{'active-status1':props.row.status==1,'active-status':props.row.status==2,'active-status2':props.row.status==3}">{{props.row.status | statusType}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" min-width="150">
           <template slot-scope="scope">
-            <el-button
-              @click="handleCheck(scope.row.id)"
-              v-if="scope.row.status==1"
-              type="text"
-              size="small"
-            >审核</el-button>
-            <el-button
-              @click="handleCheck(scope.row.id)"
-              v-if="scope.row.status==2 || scope.row.status==3"
-              type="text"
-              size="small"
-            >已审核</el-button>
+            <el-button @click="handleCheck(scope.row)" v-if="scope.row.status==1" type="text" size="small">审核</el-button>
+            <el-button @click="handleCheck(scope.row)" v-if="scope.row.status==2 || scope.row.status==3" type="text" size="small">已审核</el-button>
             <!-- <el-button @click="handleCheck(scope.row.id)" v-if="scope.row.status==1" type="text" size="small">审核</el-button> -->
 
             <el-button @click="handleEdit(scope.row)" type="text" size="small">查看</el-button>
@@ -90,14 +68,14 @@
 import { rewardList, statusList } from '@/base/base'
 export default {
   filters: {
-    rewardType(val) {
+    rewardType (val) {
       let obj = rewardList.find(item => {
         return val == item.value
       })
       console.log(obj)
       return obj ? obj.label : '--'
     },
-    statusType(val) {
+    statusType (val) {
       let obj = statusList.find(item => {
         return val == item.value
       })
@@ -111,7 +89,7 @@ export default {
     }
   },
   props: ['tableData'],
-  data() {
+  data () {
     return {
       memberInfo: {},
       rewardList,
@@ -122,33 +100,33 @@ export default {
     }
   },
   methods: {
-    swichChange(val, index) {
+    swichChange (val, index) {
       console.log(index)
       let inde = val == 1 ? 0 : 1
       this.tableData[index].job_status = this.getChangeStatus(inde)
     },
-    getChangeStatus(status) {
+    getChangeStatus (status) {
       console.log(status == 1 ? true : false)
       return status == 1 ? true : false
     },
-    handleEdit(row) {
+    handleEdit (row) {
       this.$router.push({ path: 'orderTarkingCard', query: { id: row.id } })
     },
-    handleCheck(val) {
+    handleCheck (val) {
       if (!val) {
         return this.$message.warning('选择数据')
       }
       this.$emit('handleCheck', val)
     },
 
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.multipleSelection = val;
       let arr = val.map(item => {
         return item.id
       })
       this.ids = arr.join(',')
     },
-    handleDel(row) {
+    handleDel (row) {
       if (!row) {
         return this.$message.warning('选择数据')
       }
