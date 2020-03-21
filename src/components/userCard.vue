@@ -8,7 +8,7 @@
       <el-form-item label="账号密码">
         <el-button type="primary" @click="handlePassword">重置密码</el-button>
         <span class="password-tip">
-          <i class="el-icon-warning-outline" /> 密码重置:12345，不可逆转，谨慎操作
+          <i class="el-icon-warning-outline" /> 密码重置:123456，不可逆转，谨慎操作
         </span>
       </el-form-item>
     </section>
