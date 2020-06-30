@@ -56,7 +56,7 @@
             <!-- <el-button @click="handleCheck(scope.row.id)" v-if="scope.row.status==1" type="text" size="small">审核</el-button> -->
 
             <el-button @click="handleEdit(scope.row)" type="text" size="small">查看</el-button>
-            <el-button @click="handleDel(scope.row)" type="text" size="small">删除</el-button>
+            <el-button @click="handleDel(scope.row.id)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -126,8 +126,8 @@ export default {
       })
       this.ids = arr.join(',')
     },
-    handleDel (row) {
-      if (!row) {
+    handleDel (id) {
+      if (!id) {
         return this.$message.warning('选择数据')
       }
       this.$confirm('你确定要删除吗?', '', {
@@ -135,7 +135,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$emit('handleDel', row.id)
+        this.$emit('handleDel', id)
       }).catch(() => {
         console.log('取消')
       })

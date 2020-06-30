@@ -17,7 +17,7 @@
           class="width160"
           placeholder="请选择"
         >
-          <el-option :label="item" :value="key" v-for="(item,key) in moneyList" :key="key"></el-option>
+          <el-option :label="item" :value="index" v-for="(item,index) in moneyList" :key="index"></el-option>
         </el-select>
         <el-input
           placeholder="请输入薪资"
@@ -59,12 +59,12 @@
             </template>
           </el-input>
           <div v-else-if="orderTakingForm.reward_type==4">
-            <el-input placeholder="请输入" class="width160 text-input" v-model="orderTakingForm.money">
+            <el-input placeholder="请输入" class="width160 text-input" v-model="orderTakingForm.reward_money">
               <template slot="prepend">
                 <span class="moneyType">返利总金额</span>
               </template>
             </el-input>
-            <el-input placeholder="请输入" class="width160 text-input" v-model="orderTakingForm.money">
+            <el-input placeholder="请输入" class="width160 text-input" v-model="orderTakingForm.reward_needtime">
               <template slot="prepend">
                 <span class="moneyType">需入职满</span>
               </template>
@@ -96,7 +96,7 @@
         class="x-flex-start width500"
         v-if="orderTakingForm.reward_type==1&&orderTakingForm.reward_money_type==3"
       >
-        <el-input placeholder="请输入" class="width160 text-input" v-model="orderTakingForm.money">
+        <el-input placeholder="请输入" class="width160 text-input" v-model="orderTakingForm.reward_needtime">
           <template slot="prepend">
             <span class="moneyType">次月</span>
           </template>
@@ -218,7 +218,17 @@ export default {
   props: ['moneyList', 'form'],
   data () {
     return {
-      orderTakingForm: {},
+      orderTakingForm: {
+        money: '',  // 薪资
+        money_type: '', //薪资类型 // （1：月薪，2：日薪，3：时薪）
+        reward_type: '', // 返利类型(1月返 2日返 3时返 4一次性返)
+        reward_money: '', // 返利金额(根据类型修改单位)
+        reward_money_type: '', // 1日2周3月(针对日返和时返) 1长期2持续（针对月返）结算类型 
+        settlement_time: '', // 结算时间(针对月返：次月第XX多少天；)
+        reward_needtime: '', // 需求入职天数/周数/月数(一次性时：0表示当天返)
+        duration_time: '', // 持续 (天数/周数/月数)
+        settlement_type: '', // 结算方式（1 当月/当周/当日，2 次月/次周/次日）
+      },
       comTypeList: [],
       moneyTypeList,
       rewardTypeList,
@@ -234,7 +244,6 @@ export default {
       return this.orderTakingForm.reward_pay_type == 1 ? '次' : '本'
     },
     rewardType () {
-      console.log(this.orderTakingForm.reward_money_type)
       return this.orderTakingForm.reward_money_type == 1 ? '日' : this.orderTakingForm.reward_money_type == 2 ? '周' : '月'
     }
   },
@@ -242,13 +251,22 @@ export default {
     form (val) {
       if (val) {
         this.orderTakingForm = val
+        if (this.orderTakingForm.money_type == 1) {
+          this.orderTakingForm.money = this.orderTakingForm.money - 1
+        }
+        if (val.reward_type == 1) {
+          if (val.reward_money_type == 2) {
+            let duration_time = val.duration_time ? val.duration_time : 1
+            this.reward_money_type = `持续返利` + duration_time + `月`
+          } else {
+            this.reward_money_type = 1
+            this.orderTakingForm.duration_time = ''
+          }
+        }
       }
     }
   },
   methods: {
-    getTypeFlag () {
-
-    },
     focusInput () {
       this.rewardTipShow = true
     },

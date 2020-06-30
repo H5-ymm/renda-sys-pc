@@ -6,10 +6,8 @@ const $axios = axios.create({
 });
 const baseURL1 = 'https://a.rsd123.com/index.php'
 const baseURL = 'https://a.rsd123.com/admin.php'
-const baseExportURL = 'https://a.rsd123.com/uploads/test/'
 // const baseURL1 = 'http://tiantianxsg.com:39888/index.php'
 // const baseURL = 'http://tiantianxsg.com:39888/admin.php'
-// const baseExportURL = 'http://tiantianxsg.com:39888/uploads/test/'
 
 //请求拦截
 $axios.interceptors.request.use(

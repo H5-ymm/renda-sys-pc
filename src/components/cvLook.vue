@@ -64,40 +64,16 @@
           { label: '否', value: 2 },
           { label: '试用期过后', value: 3 }
         ],
-        listdata:{
-
-        },
-        startPlaceholder: '',
-        endPlaceholder: '',
-        name: '張三',
-        ages: '23',
-        tel: '18655136575',
-        sex: '男',
-        edu: '大專',
-        address: '上海市浦東新區曹路1234號',
-        city: '上海',
-        job: '銷售',
-        money: '5000',
-        mode: '月薪',
-        fivedanger: true,
-        onejin: true,
-        start_day: '2019-3-1',
-        end_day: '2019-5-1',
+        listdata:{},
         params: {
-          uid: '1',
+          uid: localStorage.getItem('sys_uid'),
           resumeId: '1'
-        },
-        value1:'',
-        endplaceholder: '',
-        startplaceholder: ''
-
+        }
       }
     },
     created () {
-      this.getList(this.params);
-      // console.log(asdf,'asdf')
-      // console.log(teamAdministrationResume,'teamAdministrationResume')
-      // console.log(this.tableData,'tableData')
+      this.params.resumeId = this.$route.query.id
+      this.getList(this.params)
     },
     methods: {
       closeMe () {

@@ -179,8 +179,8 @@ export default {
       this.formParams.page = val
       this.getList(this.formParams)
     },
-    handleClick() {
-      this.$router.push({ path: './cvLook' })
+    handleClick(val) {
+      this.$router.push({ path: './cvLook', query: { id: val.id} })
     },
     //关闭弹窗
     handleClose() {

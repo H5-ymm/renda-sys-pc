@@ -90,7 +90,7 @@
         </el-form-item>
         <!-- 薪资和返利模式 -->
         
-        <salaryAndRebate :moneyList="moneyList" :form="orderTakingForm"></salaryAndRebate>
+        <salaryAndRebate :moneyList="moneyList"  :form="orderTakingForm"></salaryAndRebate>
         <!-- 薪资和返利模式 -->
         <el-form-item label="职位描述" prop="job_content" required>
           <span class="error el-icon-warning">职位描述，最低输入30个字。</span>
@@ -173,7 +173,7 @@ export default {
     getInfo (id) {
       getJobInfo({ id }).then(res => {
         this.orderTakingForm = res.data
-        this.orderTakingForm.job_type = Number(this.orderTakingForm.job_type)
+        // this.orderTakingForm.job_type = Number(this.orderTakingForm.job_type)
         if(res.data.provinceid){
           let provinceid = res.data.provinceid + ''
           let cityid = res.data.cityid + ''
@@ -186,15 +186,18 @@ export default {
     getList (filed) {
       getConstant({ filed }).then(res => {
         const { edu_type, money_array, job_array } = res.data
-        // console.log(job_array,'job_array')
-        // for(var i in job_array){
-        //   Number(i)
-        // }
         this.jobList = job_array
         this.eduList = edu_type
-        this.moneyList = money_array
+        this.moneyList = this.getArr(money_array)
         console.log(this.jobList,'jobList')
       })
+    },
+    getArr(obj) {
+      let arr = []
+      for(let key in obj) {
+        arr.push(obj[key])
+      }
+      return arr
     },
     // getSortType (val) {
     //     let obj = this.commentSort.find(item => {
